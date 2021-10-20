@@ -203,7 +203,7 @@
 		</tbody>
 	</table>
 	<script>
-		window.onload = function () { // Ao carregar a página
+		window.onload = function () { // After page loads
 			Array.from(document.getElementsByTagName("th")).forEach((element, index) => { // Table headers
 				element.addEventListener("click", function (event) {
 					let table = this.closest("table");
