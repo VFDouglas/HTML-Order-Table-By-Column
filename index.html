@@ -207,7 +207,7 @@
 					let table = this.closest("table");
 
 					let order_icon = this.getElementsByTagName("span")[0];
-					let order 	   = (encodeURI(order_icon.innerHTML).includes("%E2%86%91") ? "desc" : "asc");
+					let order 	   = encodeURI(order_icon.innerHTML).includes("%E2%86%91") ? "desc" : "asc";
 
 					let value_list = {}; // <tr> Object
 					let obj_key    = []; // Values of selected column
@@ -215,12 +215,12 @@
 					let string_count = 0;
 					let number_count = 0;
 
-					table.querySelectorAll("tbody tr").forEach((linha) => { // <tbody> rows
+					table.querySelectorAll("tbody tr").forEach((linha, index_line) => { // <tbody> rows
 						let key = linha.children[element.cellIndex].innerHTML.toUpperCase();
-						key.match(/^[0-9,.]*$/g) ? number_count++ : string_count++; // Check if value is numeric or string
+						key.replace("-", "").match(/^[0-9,.]*$/g) ? number_count++ : string_count++; // Check if value is numeric or string
 
-						value_list[key] = linha.outerHTML; // Adding <tr> to object
-						obj_key.push(key);
+						value_list[key + index_line] = linha.outerHTML; // Adding <tr> to object
+						obj_key.push(key + index_line);
 					});
 
 					if (number_count > 0 && string_count <= 0) { // If all values are numeric
