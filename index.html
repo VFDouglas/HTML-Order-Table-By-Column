@@ -201,9 +201,9 @@
 		</tbody>
 	</table>
 	<script>
-		window.onload = function () { // After page loads
-			Array.from(document.getElementsByTagName("th")).forEach((element, index) => { // Table headers
-				element.addEventListener("click", function (event) {
+		window.onload = function () { // Ao carregar a página
+			Array.from(document.getElementsByTagName("th")).forEach((element) => { // Table headers
+				element.addEventListener("click", function () {
 					let table = this.closest("table");
 
 					let order_icon = this.getElementsByTagName("span")[0];
@@ -216,23 +216,23 @@
 					let number_count = 0;
 
 					table.querySelectorAll("tbody tr").forEach((linha, index_line) => { // <tbody> rows
-						let key = linha.children[element.cellIndex].innerHTML.toUpperCase();
+						let key = linha.children[element.cellIndex].textContent.toUpperCase();
 						key.replace("-", "").match(/^[0-9,.]*$/g) ? number_count++ : string_count++; // Check if value is numeric or string
 
-						value_list[key + index_line] = linha.outerHTML; // Adding <tr> to object
-						obj_key.push(key + index_line);
+						value_list[key + "-----" + index_line] = linha.outerHTML.replace(/(\t)|(\n)/g, ''); // Adding <tr> to object
+						obj_key.push(key + "-----" + index_line);
 					});
 
-					if (number_count > 0 && string_count <= 0) { // If all values are numeric
+					if (string_count <= 0) { // If all values are numeric
 						obj_key.sort(function(a, b) {
-							return a - b;
+							return a.split("-----")[0] - b.split("-----")[0];
 						});
 					}
 					else {
 						obj_key.sort();
 					}
 
-					if (order == "desc"){
+					if (order === "desc"){
 						obj_key.reverse();
 						order_icon.innerHTML = "&darr;";
 					}
