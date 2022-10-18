@@ -207,7 +207,8 @@
 					let table = this.closest("table");
 
 					let order_icon = this.getElementsByTagName("span")[0];
-					let order 	   = encodeURI(order_icon.innerHTML).includes("%E2%86%91") ? "desc" : "asc";
+					let order      = encodeURI(order_icon.innerHTML).includes("%E2%86%91") ? "desc" : "asc";
+					let separator  = "-----"; // Separate the value of it's index, so data keeps intact
 
 					let value_list = {}; // <tr> Object
 					let obj_key    = []; // Values of selected column
@@ -219,13 +220,13 @@
 						let key = linha.children[element.cellIndex].textContent.toUpperCase();
 						key.replace("-", "").match(/^[0-9,.]*$/g) ? number_count++ : string_count++; // Check if value is numeric or string
 
-						value_list[key + "-----" + index_line] = linha.outerHTML.replace(/(\t)|(\n)/g, ''); // Adding <tr> to object
-						obj_key.push(key + "-----" + index_line);
+						value_list[key + separator + index_line] = linha.outerHTML.replace(/(\t)|(\n)/g, ''); // Adding <tr> to object
+						obj_key.push(key + separator + index_line);
 					});
 
 					if (string_count <= 0) { // If all values are numeric
 						obj_key.sort(function(a, b) {
-							return a.split("-----")[0] - b.split("-----")[0];
+							return a.split(separator)[0] - b.split(separator)[0];
 						});
 					}
 					else {
